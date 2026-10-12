@@ -1,6 +1,6 @@
 # Deploying AgentFencePolicy Smart Contract to Monad
 
-This document outlines the deployment and verification procedure for `AgentFencePolicy.sol` on the official **Monad Testnet**.
+This document outlines the deployment and live verification details for `AgentFencePolicy.sol` on the official **Monad Testnet**.
 
 ---
 
@@ -17,51 +17,36 @@ This document outlines the deployment and verification procedure for `AgentFence
 
 ---
 
-## 2. Prerequisites
+## 2. Live Deployed Contract & Verification Details
+
+The `AgentFencePolicy.sol` contract was compiled with `solc 0.8.37` and deployed directly to Monad Testnet:
+
+- **Contract Address**: [`0x1D3Db94C310B5ecA586bBac035C8030c9cad6068`](https://testnet.monadexplorer.com/address/0x1D3Db94C310B5ecA586bBac035C8030c9cad6068)
+- **Deployment Transaction Hash**: [`0x7a9ae4dda65ec7837ca36b144d7e9fc94cd14b3d68dca492cce31a1901244c66`](https://testnet.monadexplorer.com/tx/0x7a9ae4dda65ec7837ca36b144d7e9fc94cd14b3d68dca492cce31a1901244c66)
+- **Deployment Block**: `70481784`
+- **Initial Policy Anchor Tx**: [`0x81cc7f547be3860c42f47242197a328e4e95a6fc49129e63ef7d7c58dbe736fb`](https://testnet.monadexplorer.com/tx/0x81cc7f547be3860c42f47242197a328e4e95a6fc49129e63ef7d7c58dbe736fb)
+- **Anchored Policy ID**: `demo-finance-agent` (Version 1)
+- **Canonical Commitment Hash**: `0xe177af3b841f38aa44f05a9745570619d5e2139dcee9a646a07a620366b873af`
+- **Anchor Block**: `70481801`
+
+---
+
+## 3. How to Deploy Your Own Instance
 
 1. Ensure Python dependencies are installed:
    ```bash
    pip install -r requirements.txt
    ```
-2. Obtain testnet `MON` from the official faucet: [https://faucet.monad.xyz](https://faucet.monad.xyz).
+2. Obtain testnet `MON` from the faucet: [https://faucet.monad.xyz](https://faucet.monad.xyz).
 3. Copy `.env.example` to `.env`:
    ```bash
    cp .env.example .env
    ```
-4. Add your funded Monad testnet private key to `.env`:
+4. Set your funded private key in `.env`:
    ```env
    MONAD_PRIVATE_KEY=0x<YOUR_PRIVATE_KEY>
    ```
-
----
-
-## 3. Automated Deployment via MonadClient
-
-Deploy `AgentFencePolicy.sol` using the Python Monad client:
-
-```python
-import asyncio
-import os
-from dotenv import load_dotenv
-from chain.client.monad_client import MonadClient
-
-load_dotenv()
-
-async def main():
-    pk = os.getenv("MONAD_PRIVATE_KEY")
-    client = MonadClient(private_key=pk)
-    
-    # 1. Confirm RPC connectivity
-    conn_info = await client.verify_connection()
-    print("Connected to Monad:", conn_info)
-
-    # 2. Deploy smart contract
-    receipt = await client.deploy_contract()
-    print("Contract deployed successfully!")
-    print(f"Contract Address: {receipt['contract_address']}")
-    print(f"Transaction Hash: {receipt['tx_hash']}")
-
-asyncio.run(main())
-```
-
-Once deployed, copy the resulting contract address into your `.env` file under `AGENTFENCE_CONTRACT_ADDRESS`.
+5. Run the deployment & anchor script:
+   ```bash
+   python chain/deploy_and_anchor.py
+   ```

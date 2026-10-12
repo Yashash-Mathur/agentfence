@@ -91,12 +91,14 @@ All 17 tests run in under 3 seconds:
 
 ## 5. Monad Testnet Integration
 
-- **Network**: Monad Testnet
-- **Chain ID**: `10143`
-- **RPC URL**: `https://testnet-rpc.monad.xyz`
-- **Contract**: `chain/contracts/AgentFencePolicy.sol`
+- **Network**: Monad Testnet (Chain ID `10143`)
+- **RPC Endpoint**: `https://testnet-rpc.monad.xyz`
+- **Smart Contract Address**: [`0x1D3Db94C310B5ecA586bBac035C8030c9cad6068`](https://testnet.monadexplorer.com/address/0x1D3Db94C310B5ecA586bBac035C8030c9cad6068)
+- **Deployment Tx Hash**: [`0x7a9ae4dda65ec7837ca36b144d7e9fc94cd14b3d68dca492cce31a1901244c66`](https://testnet.monadexplorer.com/tx/0x7a9ae4dda65ec7837ca36b144d7e9fc94cd14b3d68dca492cce31a1901244c66)
+- **Initial Policy Anchor Tx**: [`0x81cc7f547be3860c42f47242197a328e4e95a6fc49129e63ef7d7c58dbe736fb`](https://testnet.monadexplorer.com/tx/0x81cc7f547be3860c42f47242197a328e4e95a6fc49129e63ef7d7c58dbe736fb)
+- **Anchored Commitment Hash**: `0xe177af3b841f38aa44f05a9745570619d5e2139dcee9a646a07a620366b873af`
 
-Detailed instructions are documented in [`docs/deployment.md`](docs/deployment.md).
+Detailed instructions and verification steps are documented in [`docs/deployment.md`](docs/deployment.md).
 
 ---
 
