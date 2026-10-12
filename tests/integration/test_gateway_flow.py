@@ -109,3 +109,37 @@ async def test_full_gateway_lifecycle():
         assert audit_resp.status_code == 200
         events = audit_resp.json()["events"]
         assert len(events) >= 3
+
+
+@pytest.mark.asyncio
+async def test_demo_runner_and_quota_endpoints():
+    transport = ASGITransport(app=app)
+    async with AsyncClient(transport=transport, base_url="http://test") as client:
+        # 1. Setup demo policy
+        setup_res = await client.get("/demo/setup")
+        assert setup_res.status_code == 200
+        assert setup_res.json()["policy_id"] == "demo-finance-agent"
+
+        # 2. Run in-process 5-step scenario
+        demo_res = await client.post("/demo/run")
+        assert demo_res.status_code == 200
+        steps = demo_res.json()["steps"]
+        assert len(steps) == 5
+
+        # Step 1: read_safe_document -> ALLOWED
+        assert steps[0]["decision"] == "ALLOWED"
+        # Step 2: send_alert -> ALLOWED
+        assert steps[1]["decision"] == "ALLOWED"
+        # Step 3: drop_production_database -> DENIED
+        assert steps[2]["decision"] == "DENIED"
+        # Step 4: exec_arbitrary_shell -> DENIED
+        assert steps[3]["decision"] == "DENIED"
+        # Step 5: execute_transfer -> PENDING_APPROVAL
+        assert steps[4]["decision"] == "PENDING_APPROVAL"
+
+        # 3. Quota usage tracking
+        quota_res = await client.get("/quota/usage?policy_id=demo-finance-agent")
+        assert quota_res.status_code == 200
+        quota_data = quota_res.json()
+        assert quota_data["used"] >= 2  # steps 1 and 2 reserved quota
+

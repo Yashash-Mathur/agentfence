@@ -1,203 +1,429 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AgentFence — AI Agent Security & Accountability Gateway</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0b0f19;
-      --card-bg: #111827;
-      --border: #1f2937;
-      --accent: #6366f1;
-      --accent-hover: #4f46e5;
-      --text: #f9fafb;
-      --text-muted: #9ca3af;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --monad: #836ef9;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      line-height: 1.5;
-      padding: 24px;
-    }
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
-    .badge-monad {
-      background: rgba(131, 110, 249, 0.15);
-      color: var(--monad);
-      border: 1px solid rgba(131, 110, 249, 0.3);
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 20px;
-      margin-bottom: 24px;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .card-title {
-      font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .stat {
-      font-size: 28px;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .mono { font-family: 'JetBrains Mono', monospace; }
-    .btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-      font-weight: 600;
-      font-size: 13px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn:hover { background: var(--accent-hover); }
-    .btn-secondary {
-      background: #374151;
-    }
-    .btn-secondary:hover { background: #4b5563; }
-    .table-container {
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
-    }
-    th {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    td {
-      padding: 12px;
-      border-bottom: 1px solid var(--border);
-    }
-    .tag {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-    }
-    .tag-allowed { background: rgba(16, 185, 129, 0.15); color: var(--success); }
-    .tag-denied { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
-    .tag-pending { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
-    .hash-box {
-      background: #090d16;
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      word-break: break-all;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AgentFence — AI Security Gateway</title>
+<style>
+  :root {
+    --bg: #080c14;
+    --surface: #0e1420;
+    --surface2: #141c2e;
+    --border: #1e2a42;
+    --border2: #2a3a5c;
+    --accent: #6366f1;
+    --accent2: #818cf8;
+    --monad: #836ef9;
+    --monad2: #a78bfa;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --muted2: #94a3b8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+  .mono { font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace; }
+
+  /* Header */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon { font-size: 22px; }
+  .logo-text { font-size: 17px; font-weight: 700; letter-spacing: -0.3px; }
+  .logo-badge {
+    background: rgba(131,110,249,0.15);
+    color: var(--monad2);
+    border: 1px solid rgba(131,110,249,0.3);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .live-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
+    50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(16,185,129,0); }
+  }
+  .live-label { color: var(--green); font-size: 11px; font-weight: 600; }
+
+  /* Buttons */
+  .btn {
+    padding: 7px 16px;
+    border-radius: 7px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost {
+    background: var(--surface2);
+    color: var(--muted2);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover:not(:disabled) { background: var(--border); color: var(--text); }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.4); }
+  .btn-run {
+    background: linear-gradient(135deg, #836ef9, #6366f1);
+    color: #fff;
+  }
+  .btn-run:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(131,110,249,0.5); }
+
+  /* Main layout */
+  .main { padding: 24px 28px; max-width: 1280px; margin: 0 auto; }
+
+  /* Stats row */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .stat-value { font-size: 26px; font-weight: 700; line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--muted); margin-top: 4px; }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .yellow { color: var(--yellow); }
+  .purple { color: var(--monad2); }
+
+  /* Info cards */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+  .badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+  }
+  .badge-green { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .badge-yellow { background: rgba(245,158,11,0.15); color: var(--yellow); border: 1px solid rgba(245,158,11,0.2); }
+  .badge-purple { background: rgba(131,110,249,0.15); color: var(--monad2); border: 1px solid rgba(131,110,249,0.2); }
+  .badge-blue { background: rgba(99,102,241,0.15); color: var(--accent2); border: 1px solid rgba(99,102,241,0.2); }
+
+  .card-field { margin-bottom: 10px; }
+  .card-field-label { font-size: 11px; color: var(--muted); margin-bottom: 3px; }
+  .card-field-value { font-weight: 600; font-size: 13px; }
+
+  .hash-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 10.5px;
+    word-break: break-all;
+    color: var(--monad2);
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+  .hash-box a { color: var(--monad2); text-decoration: none; }
+  .hash-box a:hover { text-decoration: underline; }
+
+  /* Quota bar */
+  .quota-bar-bg { background: var(--surface2); border-radius: 4px; height: 6px; margin-top: 8px; overflow: hidden; }
+  .quota-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--green), #34d399); transition: width 0.5s; }
+
+  /* Demo runner panel */
+  .demo-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 20px;
+    display: none;
+  }
+  .demo-panel.visible { display: block; }
+  .demo-panel-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 14px; }
+
+  .demo-steps { display: flex; flex-direction: column; gap: 8px; }
+  .demo-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 7px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+    animation: slideIn 0.2s ease-out;
+  }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: none; } }
+  .demo-step-num { font-size: 11px; color: var(--muted); font-weight: 600; min-width: 20px; }
+  .demo-step-label { flex: 1; font-size: 13px; }
+  .demo-step-tool { font-size: 11px; color: var(--muted); font-family: monospace; }
+  .demo-step-latency { font-size: 11px; color: var(--muted); font-family: monospace; }
+
+  /* Audit table */
+  .audit-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .audit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .audit-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); }
+  .audit-count { font-size: 12px; color: var(--muted2); display: flex; align-items: center; gap: 6px; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: var(--surface2); }
+  th { padding: 10px 16px; text-align: left; font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 11px 16px; border-bottom: 1px solid rgba(30,42,66,0.6); font-size: 12px; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr { transition: background 0.1s; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+  tbody tr.new-row { animation: flashRow 1s ease-out; }
+  @keyframes flashRow { from { background: rgba(99,102,241,0.15); } to { background: transparent; } }
+
+  .empty-state { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
+
+  /* Loading spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(255,255,255,0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Notification toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: 13px;
+    z-index: 999;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.25s;
+    max-width: 340px;
+  }
+  #toast.show { opacity: 1; transform: none; }
+  #toast.success { border-color: rgba(16,185,129,0.4); }
+  #toast.error { border-color: rgba(239,68,68,0.4); }
+</style>
 </head>
 <body>
-  <div class="header">
-    <div class="logo">
-      <span>🛡️</span> AgentFence Security Gateway
-      <span class="badge-monad">Monad Testnet (Chain ID 10143)</span>
+
+<div class="header">
+  <div class="logo">
+    <span class="logo-icon">🛡️</span>
+    <span class="logo-text">AgentFence</span>
+    <span class="logo-badge">Monad Testnet · Chain 10143</span>
+  </div>
+  <div class="header-right">
+    <div class="live-dot"></div>
+    <span class="live-label">LIVE</span>
+    <button class="btn btn-ghost" onclick="refreshAll()" id="btn-refresh">
+      🔄 Refresh State
+    </button>
+    <button class="btn btn-run" onclick="runDemo()" id="btn-demo">
+      ▶ Run Demo Agent
+    </button>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- Stats row -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Total Audit Events</div>
+      <div class="stat-value mono" id="stat-total">—</div>
+      <div class="stat-sub">all decisions</div>
     </div>
-    <div>
-      <button class="btn btn-secondary" onclick="fetchData()">🔄 Refresh State</button>
-      <button class="btn" onclick="runDemoAgent()" style="margin-left: 8px;">▶️ Run Demo Agent</button>
+    <div class="stat-card">
+      <div class="stat-label">Allowed Actions</div>
+      <div class="stat-value mono green" id="stat-allowed">—</div>
+      <div class="stat-sub">executed successfully</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Denied Actions</div>
+      <div class="stat-value mono red" id="stat-denied">—</div>
+      <div class="stat-sub">blocked by policy</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pending Approval</div>
+      <div class="stat-value mono yellow" id="stat-pending">—</div>
+      <div class="stat-sub">awaiting human review</div>
     </div>
   </div>
 
-  <div class="grid">
-    <!-- Active Policy Card -->
+  <!-- Info cards -->
+  <div class="cards-grid">
+
+    <!-- Policy card -->
     <div class="card">
-      <div class="card-title">
-        <span>Active Policy Status</span>
-        <span class="tag tag-allowed" id="policy-status">ENFORCING</span>
+      <div class="card-header">
+        <span class="card-title">Active Policy</span>
+        <span class="badge badge-green" id="policy-status-badge">ENFORCING</span>
       </div>
-      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px;">Policy ID:</div>
-      <div class="stat mono" style="font-size: 18px;" id="policy-id">demo-finance-agent</div>
-      <div style="margin-top: 12px; font-size: 13px; color: var(--text-muted);">Canonical Commitment Hash:</div>
-      <div class="hash-box mono" id="policy-hash">0x...</div>
+      <div class="card-field">
+        <div class="card-field-label">Policy ID</div>
+        <div class="card-field-value mono" id="policy-id">demo-finance-agent</div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Version</div>
+        <div class="card-field-value" id="policy-version">v1</div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Commitment Hash (Keccak-256)</div>
+        <div class="hash-box mono" id="policy-hash">Loading…</div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Quota Usage (this window)</div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+          <span class="mono" style="font-size:12px;" id="quota-text">—</span>
+        </div>
+        <div class="quota-bar-bg"><div class="quota-bar-fill" id="quota-bar" style="width:0%"></div></div>
+      </div>
     </div>
 
-    <!-- Monad Blockchain Anchor Card -->
+    <!-- Monad anchor card -->
     <div class="card">
-      <div class="card-title">
-        <span>Monad State Anchor</span>
-        <span class="tag tag-allowed" id="chain-status">ONLINE</span>
+      <div class="card-header">
+        <span class="card-title">Monad State Anchor</span>
+        <span class="badge badge-green">CONFIRMED</span>
       </div>
-      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 4px;">Target Network:</div>
-      <div style="font-weight: 600;">Monad Testnet</div>
-      <div style="margin-top: 10px; font-size: 13px; color: var(--text-muted);">Smart Contract Address:</div>
-      <div class="hash-box mono" id="contract-addr"><a href="https://testnet.monadexplorer.com/address/0x1D3Db94C310B5ecA586bBac035C8030c9cad6068" target="_blank" rel="noopener noreferrer" style="color: var(--monad); text-decoration: none;">0x1D3Db94C310B5ecA586bBac035C8030c9cad6068 ↗</a></div>
+      <div class="card-field">
+        <div class="card-field-label">Network</div>
+        <div class="card-field-value">Monad Testnet</div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Contract Address</div>
+        <div class="hash-box mono"><a href="https://testnet.monadexplorer.com/address/0x1D3Db94C310B5ecA586bBac035C8030c9cad6068" target="_blank" rel="noopener noreferrer">0x1D3Db94C310B5ecA586bBac035C8030c9cad6068 ↗</a></div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Deploy Tx</div>
+        <div class="hash-box mono"><a href="https://testnet.monadexplorer.com/tx/0x7a9ae4dda65ec7837ca36b144d7e9fc94cd14b3d68dca492cce31a1901244c66" target="_blank" rel="noopener noreferrer">0x7a9ae4…c66 ↗</a></div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Policy Anchor Tx</div>
+        <div class="hash-box mono"><a href="https://testnet.monadexplorer.com/tx/0x81cc7f547be3860c42f47242197a328e4e95a6fc49129e63ef7d7c58dbe736fb" target="_blank" rel="noopener noreferrer">0x81cc7f…fb ↗</a></div>
+      </div>
+      <div class="card-field">
+        <div class="card-field-label">Anchor Block</div>
+        <div class="card-field-value mono" style="color:var(--monad2)">70481801</div>
+      </div>
     </div>
 
-    <!-- Verification Card -->
+    <!-- Verifier card -->
     <div class="card">
-      <div class="card-title">
-        <span>Independent Verifier</span>
-        <span class="tag tag-allowed">RFC-8785 KECCAK256</span>
+      <div class="card-header">
+        <span class="card-title">Independent Verifier</span>
+        <span class="badge badge-purple">RFC-8785 · KECCAK-256</span>
       </div>
-      <div style="font-size: 13px; color: var(--text-muted);">State Consistency:</div>
-      <div style="font-size: 16px; font-weight: 600; color: var(--success); margin-top: 4px;" id="verification-status">
-        ✓ Cryptographic Commitment Verified
+      <div style="margin-bottom: 14px;">
+        <div class="card-field-label">On-Chain Verification Result</div>
+        <div style="font-size:15px; font-weight:700; color:var(--green); margin-top:6px;" id="verify-result">
+          ✓ Commitment Verified
+        </div>
+        <div style="font-size:11px; color:var(--muted); margin-top:4px;" id="verify-detail">
+          Off-chain policy bytes match on-chain commitment.
+        </div>
       </div>
-      <div style="margin-top: 10px; font-size: 12px; color: var(--text-muted);">
-        Verification proves off-chain policy matches committed bytes without tampering.
+      <div class="card-field">
+        <div class="card-field-label">What verification proves</div>
+        <div style="font-size:11.5px; color:var(--muted2); line-height:1.6;">
+          The exact policy bytes committed by the authorized operator on Monad cannot be retroactively altered without detection.
+        </div>
+      </div>
+      <div class="card-field" style="margin-top:10px;">
+        <div class="card-field-label">What it does NOT prove</div>
+        <div style="font-size:11.5px; color:var(--muted); line-height:1.6;">
+          It does not guarantee external actions outside the gateway boundary are honest.
+        </div>
       </div>
     </div>
+
   </div>
 
-  <!-- Audit Events Table -->
-  <div class="card">
-    <div class="card-title">
-      <span>Enforcement Gateway Audit Log</span>
-      <span style="font-size: 12px; color: var(--text-muted);" id="events-count">Live Stream</span>
+  <!-- Demo runner output -->
+  <div class="demo-panel" id="demo-panel">
+    <div class="demo-panel-title">▶ Demo Agent Scenario — Execution Trace</div>
+    <div class="demo-steps" id="demo-steps"></div>
+  </div>
+
+  <!-- Audit log -->
+  <div class="audit-card">
+    <div class="audit-header">
+      <span class="audit-title">🛡 Enforcement Gateway Audit Log</span>
+      <div class="audit-count">
+        <div class="live-dot" style="width:6px;height:6px;"></div>
+        <span id="audit-count-label">Auto-refresh every 3s</span>
+      </div>
     </div>
-    <div class="table-container">
+    <div style="overflow-x:auto;">
       <table>
         <thead>
           <tr>
@@ -205,71 +431,207 @@
             <th>Tool Name</th>
             <th>Decision</th>
             <th>Status</th>
+            <th>Error / Code</th>
             <th>Fingerprint</th>
             <th>Latency</th>
           </tr>
         </thead>
-        <tbody id="audit-table-body">
-          <tr>
-            <td colspan="6" style="text-align: center; color: var(--text-muted);">Loading audit log...</td>
-          </tr>
+        <tbody id="audit-body">
+          <tr><td colspan="7" class="empty-state">Awaiting actions…</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <script>
-    async function fetchData() {
-      try {
-        const polRes = await fetch('/policies/demo-finance-agent');
-        if (polRes.ok) {
-          const data = await polRes.json();
-          document.getElementById('policy-id').innerText = data.policy.policy_id + ' (v' + data.policy.version + ')';
-          document.getElementById('policy-hash').innerText = data.commitment_hash;
-        }
+</div>
 
-        const auditRes = await fetch('/audit/events?limit=25');
-        if (auditRes.ok) {
-          const data = await auditRes.json();
-          renderAuditTable(data.events);
-        }
-      } catch (e) {
-        console.error('Failed to fetch gateway status:', e);
-      }
+<div id="toast"></div>
+
+<script>
+  let lastEventCount = 0;
+  let refreshInterval = null;
+
+  // ── Toast notification ──────────────────────────────────────────────────────
+  function toast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `show ${type}`;
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => { el.className = ''; }, 3500);
+  }
+
+  // ── Fetch wrapper ────────────────────────────────────────────────────────────
+  async function api(path, options = {}) {
+    const res = await fetch(path, options);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }
+
+  // ── Decision badge HTML ──────────────────────────────────────────────────────
+  function decisionBadge(d) {
+    if (d === 'ALLOWED')         return `<span class="badge badge-green">${d}</span>`;
+    if (d === 'DENIED')          return `<span class="badge badge-red">${d}</span>`;
+    if (d === 'PENDING_APPROVAL') return `<span class="badge badge-yellow">APPROVAL</span>`;
+    return `<span class="badge badge-blue">${d}</span>`;
+  }
+
+  // ── Demo step badge ──────────────────────────────────────────────────────────
+  function stepBadge(d) {
+    if (d === 'ALLOWED')          return `<span class="badge badge-green">✓ ALLOWED</span>`;
+    if (d === 'DENIED')           return `<span class="badge badge-red">✗ BLOCKED</span>`;
+    if (d === 'PENDING_APPROVAL') return `<span class="badge badge-yellow">⏸ APPROVAL</span>`;
+    return `<span class="badge badge-blue">${d}</span>`;
+  }
+
+  // ── Refresh Stats ────────────────────────────────────────────────────────────
+  async function refreshStats(events) {
+    const total = events.length;
+    const allowed  = events.filter(e => e.decision === 'ALLOWED').length;
+    const denied   = events.filter(e => e.decision === 'DENIED').length;
+    const pending  = events.filter(e => e.decision === 'PENDING_APPROVAL').length;
+
+    document.getElementById('stat-total').textContent   = total;
+    document.getElementById('stat-allowed').textContent = allowed;
+    document.getElementById('stat-denied').textContent  = denied;
+    document.getElementById('stat-pending').textContent = pending;
+  }
+
+  // ── Refresh Quota ────────────────────────────────────────────────────────────
+  async function refreshQuota() {
+    try {
+      const data = await api('/quota/usage?policy_id=demo-finance-agent');
+      const pct = Math.min(100, Math.round((data.used / data.max) * 100));
+      document.getElementById('quota-text').textContent = `${data.used} / ${data.max} requests`;
+      document.getElementById('quota-bar').style.width = `${pct}%`;
+    } catch(_) {}
+  }
+
+  // ── Refresh Policy ───────────────────────────────────────────────────────────
+  async function refreshPolicy() {
+    try {
+      const data = await api('/policies/demo-finance-agent');
+      document.getElementById('policy-id').textContent      = `${data.policy.policy_id}`;
+      document.getElementById('policy-version').textContent = `v${data.policy.version}`;
+      document.getElementById('policy-hash').textContent    = data.commitment_hash;
+    } catch(e) {
+      document.getElementById('policy-hash').textContent = 'Error loading policy';
     }
+  }
 
-    function renderAuditTable(events) {
-      const tbody = document.getElementById('audit-table-body');
-      if (!events || events.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No audit events recorded yet.</td></tr>';
+  // ── Refresh Audit Log ────────────────────────────────────────────────────────
+  async function refreshAudit() {
+    try {
+      const data = await api('/audit/events?limit=100');
+      const events = data.events || [];
+      const isNew = events.length > lastEventCount;
+
+      await refreshStats(events);
+
+      document.getElementById('audit-count-label').textContent =
+        `${events.length} event${events.length !== 1 ? 's' : ''} · auto-refresh every 3s`;
+
+      const tbody = document.getElementById('audit-body');
+      if (events.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="empty-state">No audit events yet — click ▶ Run Demo Agent to generate live traffic.</td></tr>`;
+        lastEventCount = 0;
         return;
       }
-      tbody.innerHTML = events.map(e => {
-        let tagClass = 'tag-allowed';
-        if (e.decision === 'DENIED') tagClass = 'tag-denied';
-        if (e.decision === 'PENDING_APPROVAL') tagClass = 'tag-pending';
 
-        return `
-          <tr>
-            <td class="mono" style="font-size: 11px;">${e.created_at || 'Just now'}</td>
-            <td style="font-weight: 600;">${e.tool_name}</td>
-            <td><span class="tag ${tagClass}">${e.decision}</span></td>
-            <td>${e.execution_status}</td>
-            <td class="mono" style="font-size: 11px;">${(e.action_fingerprint || '').slice(0, 16)}...</td>
-            <td class="mono" style="font-size: 11px;">${e.latency_ms} ms</td>
-          </tr>
-        `;
+      tbody.innerHTML = events.map((e, i) => {
+        const isNewRow = i < (events.length - lastEventCount) && isNew;
+        const time = e.created_at ? e.created_at.split('.')[0].replace('T',' ') : 'just now';
+        const fp   = e.action_fingerprint ? e.action_fingerprint.slice(0, 14) + '…' : '—';
+        const code = e.error_code ? `<span style="color:var(--yellow);font-size:10.5px;">${e.error_code}</span>` : '<span style="color:var(--muted)">—</span>';
+        return `<tr class="${isNewRow ? 'new-row' : ''}">
+          <td class="mono" style="font-size:11px;color:var(--muted2)">${time}</td>
+          <td style="font-weight:600">${e.tool_name}</td>
+          <td>${decisionBadge(e.decision)}</td>
+          <td style="font-size:11.5px;color:var(--muted2)">${e.execution_status}</td>
+          <td>${code}</td>
+          <td class="mono" style="font-size:10.5px;color:var(--muted)">${fp}</td>
+          <td class="mono" style="font-size:11px;color:var(--muted2)">${e.latency_ms ? e.latency_ms.toFixed(1) + ' ms' : '—'}</td>
+        </tr>`;
       }).join('');
-    }
 
-    async function runDemoAgent() {
-      alert("Triggering Autonomous Demo Agent scenario against AgentFence Gateway...");
-      fetchData();
+      if (isNew && events.length > 0) toast(`${events.length - lastEventCount} new event(s)`, 'success');
+      lastEventCount = events.length;
+    } catch(e) {
+      console.error('Audit refresh error:', e);
     }
+  }
 
-    // Initial load and periodic polling
-    fetchData();
-    setInterval(fetchData, 4000);
-  </script>
+  // ── Full Refresh ─────────────────────────────────────────────────────────────
+  async function refreshAll() {
+    const btn = document.getElementById('btn-refresh');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Refreshing…';
+    try {
+      await Promise.all([refreshPolicy(), refreshAudit(), refreshQuota()]);
+      toast('State refreshed', 'success');
+    } catch(e) {
+      toast('Refresh failed: ' + e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '🔄 Refresh State';
+    }
+  }
+
+  // ── Run Demo Agent ───────────────────────────────────────────────────────────
+  async function runDemo() {
+    const btn = document.getElementById('btn-demo');
+    const panel = document.getElementById('demo-panel');
+    const stepsEl = document.getElementById('demo-steps');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Running…';
+    panel.classList.add('visible');
+    stepsEl.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">Executing 5-step demo scenario against the policy engine…</div>';
+
+    try {
+      const data = await api('/demo/run', { method: 'POST' });
+      stepsEl.innerHTML = '';
+
+      for (const step of data.steps) {
+        const div = document.createElement('div');
+        div.className = 'demo-step';
+
+        let reason = '';
+        if (step.reason) reason = `<span style="font-size:11px;color:var(--muted);margin-left:4px;">· ${step.reason}</span>`;
+
+        div.innerHTML = `
+          <span class="demo-step-num">${step.step}</span>
+          <span class="demo-step-label">${step.label}</span>
+          <span class="demo-step-tool mono">${step.tool_name}</span>
+          ${reason}
+          ${stepBadge(step.decision)}
+          <span class="demo-step-latency">${step.latency_ms ? step.latency_ms.toFixed(1)+'ms' : ''}</span>
+        `;
+        stepsEl.appendChild(div);
+        await new Promise(r => setTimeout(r, 180)); // stagger for effect
+      }
+
+      await refreshAudit();
+      await refreshQuota();
+      toast('Demo scenario complete — audit log updated', 'success');
+    } catch(e) {
+      stepsEl.innerHTML = `<div style="color:var(--red);font-size:13px;">Error: ${e.message}</div>`;
+      toast('Demo failed: ' + e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '▶ Run Demo Agent';
+    }
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────────
+  async function init() {
+    // Ensure policy is seeded
+    try { await api('/demo/setup'); } catch(_) {}
+    await refreshAll();
+    // Auto-refresh audit every 3s
+    refreshInterval = setInterval(refreshAudit, 3000);
+  }
+
+  init();
+</script>
 </body>
 </html>
