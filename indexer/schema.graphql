@@ -1,0 +1,46 @@
+# ==============================================================================
+# Envio GraphQL Schema for AgentFence
+# Tracks active AI agent policies and their historical anchor/revocation events.
+# ==============================================================================
+
+"""
+Active on-chain policy state for an AI agent.
+Represents the current authoritative commitment anchored on Monad.
+"""
+type Policy @entity {
+  id: ID!                         # Canonical policy key (bytes32 hex)
+  policyId: String!               # Human-readable policy identifier (e.g. demo-finance-agent)
+  activeVersion: BigInt!          # Current monotonic version number
+  commitmentHash: String!         # Keccak-256 canonical hash of the JSON policy
+  isRevoked: Boolean!             # Emergency revocation flag
+  anchoredAt: BigInt!             # Timestamp of latest anchor
+  lastUpdatedBlock: BigInt!       # Block number of latest anchor or revocation
+  lastUpdatedTx: String!          # Transaction hash of latest update
+}
+
+"""
+Historical record of every PolicyAnchored event emitted on Monad.
+"""
+type PolicyAnchorEvent @entity {
+  id: ID!                         # txHash-logIndex
+  policyKey: String!              # Indexed bytes32 policy key
+  policyId: String!               # Policy identifier string
+  version: BigInt!                # Anchored version
+  commitmentHash: String!         # Policy commitment hash
+  timestamp: BigInt!              # Block timestamp
+  blockNumber: BigInt!            # Block number
+  transactionHash: String!        # Monad transaction hash
+}
+
+"""
+Historical record of emergency PolicyRevoked events emitted on Monad.
+"""
+type PolicyRevocationEvent @entity {
+  id: ID!                         # txHash-logIndex
+  policyKey: String!              # Indexed bytes32 policy key
+  policyId: String!               # Policy identifier string
+  version: BigInt!                # Version at time of revocation
+  timestamp: BigInt!              # Block timestamp
+  blockNumber: BigInt!            # Block number
+  transactionHash: String!        # Monad transaction hash
+}

@@ -26,7 +26,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 14px;
     line-height: 1.5;
     min-height: 100vh;
@@ -59,52 +59,81 @@
     font-weight: 600;
     letter-spacing: 0.3px;
   }
-  .header-right { display: flex; align-items: center; gap: 10px; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .status-indicator { display: flex; align-items: center; gap: 6px; }
   .live-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--green);
     animation: pulse 2s infinite;
   }
+  .live-dot.offline {
+    background: var(--red);
+    animation: none;
+    box-shadow: 0 0 6px rgba(239,68,68,0.6);
+  }
   @keyframes pulse {
     0%,100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16,185,129,0.4); }
     50% { opacity: 0.8; box-shadow: 0 0 0 4px rgba(16,185,129,0); }
   }
-  .live-label { color: var(--green); font-size: 11px; font-weight: 600; }
+  .live-label { color: var(--green); font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+  .live-label.offline { color: var(--red); }
 
   /* Buttons */
   .btn {
-    padding: 7px 16px;
+    padding: 8px 16px;
     border-radius: 7px;
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
     border: none;
-    transition: all 0.15s;
+    transition: all 0.15s ease-in-out;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
+    user-select: none;
   }
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn:disabled { opacity: 0.6; cursor: not-allowed; }
   .btn-ghost {
     background: var(--surface2);
-    color: var(--muted2);
-    border: 1px solid var(--border);
+    color: var(--text);
+    border: 1px solid var(--border2);
   }
-  .btn-ghost:hover:not(:disabled) { background: var(--border); color: var(--text); }
-  .btn-primary {
-    background: var(--accent);
-    color: #fff;
+  .btn-ghost:hover:not(:disabled) {
+    background: #1e2c47;
+    border-color: var(--accent2);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.3);
   }
-  .btn-primary:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(99,102,241,0.4); }
+  .btn-ghost:active:not(:disabled) { transform: translateY(0); }
   .btn-run {
     background: linear-gradient(135deg, #836ef9, #6366f1);
     color: #fff;
+    box-shadow: 0 2px 10px rgba(99,102,241,0.3);
   }
-  .btn-run:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(131,110,249,0.5); }
+  .btn-run:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(131,110,249,0.5);
+  }
+  .btn-run:active:not(:disabled) { transform: translateY(0); }
 
   /* Main layout */
   .main { padding: 24px 28px; max-width: 1280px; margin: 0 auto; }
+
+  /* Server notice banner */
+  #offline-banner {
+    display: none;
+    background: rgba(239,68,68,0.12);
+    border: 1px solid rgba(239,68,68,0.4);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #fca5a5;
+    align-items: center;
+    justify-content: space-between;
+  }
+  #offline-banner.visible { display: flex; }
 
   /* Stats row */
   .stats-grid {
@@ -118,6 +147,7 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 16px 18px;
+    transition: all 0.3s ease;
   }
   .stat-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
   .stat-value { font-size: 26px; font-weight: 700; line-height: 1; }
@@ -126,6 +156,13 @@
   .red { color: var(--red); }
   .yellow { color: var(--yellow); }
   .purple { color: var(--monad2); }
+
+  /* Pulse animation on refreshed elements */
+  @keyframes cardPulse {
+    0% { border-color: var(--accent); box-shadow: 0 0 14px rgba(99,102,241,0.3); }
+    100% { border-color: var(--border); box-shadow: none; }
+  }
+  .flash-card { animation: cardPulse 0.6s ease-out; }
 
   /* Info cards */
   .cards-grid {
@@ -139,6 +176,7 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 18px;
+    transition: all 0.3s ease;
   }
   .card-header {
     display: flex;
@@ -181,7 +219,7 @@
 
   /* Quota bar */
   .quota-bar-bg { background: var(--surface2); border-radius: 4px; height: 6px; margin-top: 8px; overflow: hidden; }
-  .quota-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--green), #34d399); transition: width 0.5s; }
+  .quota-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, var(--green), #34d399); transition: width 0.5s ease; }
 
   /* Demo runner panel */
   .demo-panel {
@@ -219,6 +257,7 @@
     border: 1px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
+    transition: all 0.3s ease;
   }
   .audit-header {
     display: flex;
@@ -237,40 +276,43 @@
   tbody tr { transition: background 0.1s; }
   tbody tr:hover { background: rgba(255,255,255,0.02); }
   tbody tr.new-row { animation: flashRow 1s ease-out; }
-  @keyframes flashRow { from { background: rgba(99,102,241,0.15); } to { background: transparent; } }
+  @keyframes flashRow { from { background: rgba(99,102,241,0.18); } to { background: transparent; } }
 
   .empty-state { text-align: center; padding: 40px; color: var(--muted); font-size: 13px; }
 
   /* Loading spinner */
   .spinner {
     display: inline-block;
-    width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,0.2);
+    width: 13px; height: 13px;
+    border: 2px solid rgba(255,255,255,0.25);
     border-top-color: #fff;
     border-radius: 50%;
-    animation: spin 0.7s linear infinite;
+    animation: spin 0.6s linear infinite;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* Notification toast */
   #toast {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    top: 20px;
+    right: 28px;
     background: var(--surface2);
     border: 1px solid var(--border2);
     border-radius: 8px;
-    padding: 12px 18px;
+    padding: 12px 20px;
     font-size: 13px;
-    z-index: 999;
+    z-index: 99999;
     opacity: 0;
-    transform: translateY(8px);
-    transition: all 0.25s;
-    max-width: 340px;
+    transform: translateY(-8px);
+    transition: all 0.25s ease;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    pointer-events: none;
   }
   #toast.show { opacity: 1; transform: none; }
-  #toast.success { border-color: rgba(16,185,129,0.4); }
-  #toast.error { border-color: rgba(239,68,68,0.4); }
+  #toast.success { border-color: rgba(16,185,129,0.5); color: #34d399; }
+  #toast.error { border-color: rgba(239,68,68,0.5); color: #f87171; }
+  #toast.info { border-color: rgba(99,102,241,0.5); color: var(--accent2); }
 </style>
 </head>
 <body>
@@ -282,12 +324,14 @@
     <span class="logo-badge">Monad Testnet · Chain 10143</span>
   </div>
   <div class="header-right">
-    <div class="live-dot"></div>
-    <span class="live-label">LIVE</span>
-    <button class="btn btn-ghost" onclick="refreshAll()" id="btn-refresh">
+    <div class="status-indicator">
+      <div class="live-dot" id="live-dot"></div>
+      <span class="live-label" id="live-label">LIVE</span>
+    </div>
+    <button class="btn btn-ghost" onclick="refreshAll()" id="btn-refresh" title="Synchronize state from local gateway">
       🔄 Refresh State
     </button>
-    <button class="btn btn-run" onclick="runDemo()" id="btn-demo">
+    <button class="btn btn-run" onclick="runDemo()" id="btn-demo" title="Execute 5-step scenario through policy engine">
       ▶ Run Demo Agent
     </button>
   </div>
@@ -295,24 +339,33 @@
 
 <div class="main">
 
+  <!-- Offline Warning Banner -->
+  <div id="offline-banner">
+    <div>
+      <strong>⚠️ Gateway Offline:</strong> Could not connect to <code>http://127.0.0.1:8000</code>.
+      Make sure to run <code>python -m uvicorn gateway.main:app --port 8000</code> in your terminal.
+    </div>
+    <button class="btn btn-ghost" style="padding:4px 10px; font-size:11px;" onclick="refreshAll()">Retry</button>
+  </div>
+
   <!-- Stats row -->
   <div class="stats-grid">
-    <div class="stat-card">
+    <div class="stat-card" id="card-stat-total">
       <div class="stat-label">Total Audit Events</div>
       <div class="stat-value mono" id="stat-total">—</div>
-      <div class="stat-sub">all decisions</div>
+      <div class="stat-sub">all decisions recorded</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="card-stat-allowed">
       <div class="stat-label">Allowed Actions</div>
       <div class="stat-value mono green" id="stat-allowed">—</div>
-      <div class="stat-sub">executed successfully</div>
+      <div class="stat-sub">executed safely</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="card-stat-denied">
       <div class="stat-label">Denied Actions</div>
       <div class="stat-value mono red" id="stat-denied">—</div>
-      <div class="stat-sub">blocked by policy</div>
+      <div class="stat-sub">blocked by policy engine</div>
     </div>
-    <div class="stat-card">
+    <div class="stat-card" id="card-stat-pending">
       <div class="stat-label">Pending Approval</div>
       <div class="stat-value mono yellow" id="stat-pending">—</div>
       <div class="stat-sub">awaiting human review</div>
@@ -323,7 +376,7 @@
   <div class="cards-grid">
 
     <!-- Policy card -->
-    <div class="card">
+    <div class="card" id="card-policy">
       <div class="card-header">
         <span class="card-title">Active Policy</span>
         <span class="badge badge-green" id="policy-status-badge">ENFORCING</span>
@@ -341,7 +394,7 @@
         <div class="hash-box mono" id="policy-hash">Loading…</div>
       </div>
       <div class="card-field">
-        <div class="card-field-label">Quota Usage (this window)</div>
+        <div class="card-field-label">Quota Usage (Current Window)</div>
         <div style="display:flex; align-items:center; gap:8px; margin-top:4px;">
           <span class="mono" style="font-size:12px;" id="quota-text">—</span>
         </div>
@@ -357,7 +410,7 @@
       </div>
       <div class="card-field">
         <div class="card-field-label">Network</div>
-        <div class="card-field-value">Monad Testnet</div>
+        <div class="card-field-value">Monad Testnet (Chain ID 10143)</div>
       </div>
       <div class="card-field">
         <div class="card-field-label">Contract Address</div>
@@ -410,12 +463,12 @@
 
   <!-- Demo runner output -->
   <div class="demo-panel" id="demo-panel">
-    <div class="demo-panel-title">▶ Demo Agent Scenario — Execution Trace</div>
+    <div class="demo-panel-title">▶ Demo Agent Scenario — Real-Time Execution Trace</div>
     <div class="demo-steps" id="demo-steps"></div>
   </div>
 
   <!-- Audit log -->
-  <div class="audit-card">
+  <div class="audit-card" id="card-audit">
     <div class="audit-header">
       <span class="audit-title">🛡 Enforcement Gateway Audit Log</span>
       <div class="audit-count">
@@ -448,8 +501,14 @@
 <div id="toast"></div>
 
 <script>
+  // Dynamic base URL: handles both http://127.0.0.1:8000 and direct file:/// viewing
+  const BASE_URL = (window.location.protocol === 'file:' || !window.location.host) 
+    ? 'http://127.0.0.1:8000' 
+    : '';
+
   let lastEventCount = 0;
   let refreshInterval = null;
+  let isServerOnline = true;
 
   // ── Toast notification ──────────────────────────────────────────────────────
   function toast(msg, type = 'info') {
@@ -460,17 +519,52 @@
     el._timer = setTimeout(() => { el.className = ''; }, 3500);
   }
 
+  // ── Connection status handler ───────────────────────────────────────────────
+  function setServerStatus(online) {
+    isServerOnline = online;
+    const dot = document.getElementById('live-dot');
+    const label = document.getElementById('live-label');
+    const banner = document.getElementById('offline-banner');
+
+    if (online) {
+      dot.className = 'live-dot';
+      label.className = 'live-label';
+      label.textContent = 'ONLINE';
+      banner.className = '';
+    } else {
+      dot.className = 'live-dot offline';
+      label.className = 'live-label offline';
+      label.textContent = 'OFFLINE';
+      banner.className = 'visible';
+    }
+  }
+
   // ── Fetch wrapper ────────────────────────────────────────────────────────────
   async function api(path, options = {}) {
-    const res = await fetch(path, options);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
+    const targetUrl = `${BASE_URL}${path}`;
+    try {
+      const res = await fetch(targetUrl, {
+        ...options,
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        }
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setServerStatus(true);
+      return await res.json();
+    } catch(err) {
+      if (err.name === 'TypeError' || err.message.includes('Failed to fetch')) {
+        setServerStatus(false);
+      }
+      throw err;
+    }
   }
 
   // ── Decision badge HTML ──────────────────────────────────────────────────────
   function decisionBadge(d) {
-    if (d === 'ALLOWED')         return `<span class="badge badge-green">${d}</span>`;
-    if (d === 'DENIED')          return `<span class="badge badge-red">${d}</span>`;
+    if (d === 'ALLOWED')          return `<span class="badge badge-green">${d}</span>`;
+    if (d === 'DENIED')           return `<span class="badge badge-red">${d}</span>`;
     if (d === 'PENDING_APPROVAL') return `<span class="badge badge-yellow">APPROVAL</span>`;
     return `<span class="badge badge-blue">${d}</span>`;
   }
@@ -485,10 +579,10 @@
 
   // ── Refresh Stats ────────────────────────────────────────────────────────────
   async function refreshStats(events) {
-    const total = events.length;
-    const allowed  = events.filter(e => e.decision === 'ALLOWED').length;
-    const denied   = events.filter(e => e.decision === 'DENIED').length;
-    const pending  = events.filter(e => e.decision === 'PENDING_APPROVAL').length;
+    const total   = events.length;
+    const allowed = events.filter(e => e.decision === 'ALLOWED').length;
+    const denied  = events.filter(e => e.decision === 'DENIED').length;
+    const pending = events.filter(e => e.decision === 'PENDING_APPROVAL').length;
 
     document.getElementById('stat-total').textContent   = total;
     document.getElementById('stat-allowed').textContent = allowed;
@@ -514,7 +608,7 @@
       document.getElementById('policy-version').textContent = `v${data.policy.version}`;
       document.getElementById('policy-hash').textContent    = data.commitment_hash;
     } catch(e) {
-      document.getElementById('policy-hash').textContent = 'Error loading policy';
+      document.getElementById('policy-hash').textContent = 'Unable to reach gateway';
     }
   }
 
@@ -553,10 +647,12 @@
         </tr>`;
       }).join('');
 
-      if (isNew && events.length > 0) toast(`${events.length - lastEventCount} new event(s)`, 'success');
+      if (isNew && events.length > 0 && lastEventCount > 0) {
+        toast(`+${events.length - lastEventCount} new audit event(s)`, 'info');
+      }
       lastEventCount = events.length;
     } catch(e) {
-      console.error('Audit refresh error:', e);
+      console.warn('Audit fetch warning:', e.message);
     }
   }
 
@@ -565,11 +661,30 @@
     const btn = document.getElementById('btn-refresh');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Refreshing…';
+
+    const startTime = performance.now();
     try {
+      // 1. Ensure setup is initialized
+      try { await api('/demo/setup'); } catch(_) {}
+
+      // 2. Fetch all components concurrently
       await Promise.all([refreshPolicy(), refreshAudit(), refreshQuota()]);
-      toast('State refreshed', 'success');
+
+      // Ensure minimum 350ms duration so the user sees the responsive button action
+      const elapsed = performance.now() - startTime;
+      if (elapsed < 350) {
+        await new Promise(r => setTimeout(r, 350 - elapsed));
+      }
+
+      // Visual flash effect on refreshed cards
+      document.querySelectorAll('.stat-card, .card, .audit-card').forEach(el => {
+        el.classList.add('flash-card');
+        setTimeout(() => el.classList.remove('flash-card'), 600);
+      });
+
+      toast('✓ State synchronized with Gateway', 'success');
     } catch(e) {
-      toast('Refresh failed: ' + e.message, 'error');
+      toast('Could not connect to Gateway at ' + (BASE_URL || 'localhost:8000'), 'error');
     } finally {
       btn.disabled = false;
       btn.innerHTML = '🔄 Refresh State';
@@ -585,7 +700,7 @@
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner"></span> Running…';
     panel.classList.add('visible');
-    stepsEl.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">Executing 5-step demo scenario against the policy engine…</div>';
+    stepsEl.innerHTML = '<div style="color:var(--muted);font-size:12px;padding:8px 0">Executing 5-step scenario through policy engine…</div>';
 
     try {
       const data = await api('/demo/run', { method: 'POST' });
@@ -607,14 +722,14 @@
           <span class="demo-step-latency">${step.latency_ms ? step.latency_ms.toFixed(1)+'ms' : ''}</span>
         `;
         stepsEl.appendChild(div);
-        await new Promise(r => setTimeout(r, 180)); // stagger for effect
+        await new Promise(r => setTimeout(r, 160));
       }
 
       await refreshAudit();
       await refreshQuota();
-      toast('Demo scenario complete — audit log updated', 'success');
+      toast('Demo completed — 5 actions evaluated & recorded', 'success');
     } catch(e) {
-      stepsEl.innerHTML = `<div style="color:var(--red);font-size:13px;">Error: ${e.message}</div>`;
+      stepsEl.innerHTML = `<div style="color:var(--red);font-size:13px;padding:8px 0;">Error running scenario: ${e.message}</div>`;
       toast('Demo failed: ' + e.message, 'error');
     } finally {
       btn.disabled = false;
@@ -622,16 +737,16 @@
     }
   }
 
-  // ── Init ─────────────────────────────────────────────────────────────────────
+  // ── Initialization ───────────────────────────────────────────────────────────
   async function init() {
-    // Ensure policy is seeded
-    try { await api('/demo/setup'); } catch(_) {}
+    try {
+      await api('/demo/setup');
+    } catch(_) {}
     await refreshAll();
-    // Auto-refresh audit every 3s
     refreshInterval = setInterval(refreshAudit, 3000);
   }
 
-  init();
+  window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
 </html>

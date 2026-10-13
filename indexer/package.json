@@ -1,0 +1,17 @@
+{
+  "name": "agentfence-indexer",
+  "version": "1.0.0",
+  "description": "Envio indexer for AgentFence AI Security Policies anchored on Monad Testnet",
+  "scripts": {
+    "codegen": "envio codegen",
+    "dev": "envio dev",
+    "build": "envio build",
+    "start": "envio start"
+  },
+  "dependencies": {
+    "envio": "^2.16.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

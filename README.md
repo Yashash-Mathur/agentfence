@@ -102,7 +102,18 @@ Detailed instructions and verification steps are documented in [`docs/deployment
 
 ---
 
-## 6. Honest Limitations & Threat Model
+## 6. Envio Indexer & Data Pipeline
+
+AgentFence includes a full **Envio HyperIndex** indexer and **HyperSync** data pipeline under [`indexer/`](indexer/):
+- **`indexer/config.yaml`**: Envio configuration for Monad Testnet (Chain ID 10143) tracking `PolicyAnchored` and `PolicyRevoked` events.
+- **`indexer/schema.graphql`**: GraphQL entities for `Policy`, `PolicyAnchorEvent`, and `PolicyRevocationEvent`.
+- **`indexer/src/EventHandlers.ts`**: TypeScript event handlers processing real-time Monad state changes.
+- **`indexer/hypersync_client.py`**: Standalone Python HyperSync data pipeline streaming on-chain events directly from Monad Testnet RPC.
+- See [`indexer/README.md`](indexer/README.md) for local setup, Docker deployment, and Envio Cloud hosted instructions.
+
+---
+
+## 7. Honest Limitations & Threat Model
 
 Please read our honest disclosures in [`docs/limitations.md`](docs/limitations.md) and [`docs/threat-model.md`](docs/threat-model.md).
 - AgentFence protects actions routed through its gateway. It is not an OS-level kernel sandbox.
@@ -110,12 +121,12 @@ Please read our honest disclosures in [`docs/limitations.md`](docs/limitations.m
 
 ---
 
-## 7. AI Disclosure & Originality
+## 8. AI Disclosure & Originality
 
 This project was built during the Monad Metropolis Hackathon. AI pair programming assistance was used for rapid boilerplate generation, documentation drafting, and test-case structuring under strict human design, review, and verification.
 
 ---
 
-## 8. License
+## 9. License
 
 MIT License. See [LICENSE](LICENSE) for details.

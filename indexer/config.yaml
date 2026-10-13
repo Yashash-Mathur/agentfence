@@ -1,0 +1,23 @@
+# ==============================================================================
+# Envio Indexer Configuration for AgentFence
+# Network: Monad Testnet (Chain ID: 10143)
+# Contract: AgentFencePolicy
+# ==============================================================================
+
+name: agentfence-indexer
+description: High-throughput indexer for AgentFence AI Security Policies anchored on Monad Testnet
+
+networks:
+  - id: 10143
+    rpc_config:
+      url: https://testnet-rpc.monad.xyz
+    start_block: 70481700
+    contracts:
+      - name: AgentFencePolicy
+        address:
+          - "0x1D3Db94C310B5ecA586bBac035C8030c9cad6068"
+        abi_file_path: abis/AgentFencePolicy.json
+        handler: src/EventHandlers.ts
+        events:
+          - event: PolicyAnchored(bytes32 indexed policyKey, string policyId, uint64 indexed version, bytes32 commitmentHash, uint64 timestamp)
+          - event: PolicyRevoked(bytes32 indexed policyKey, string policyId, uint64 indexed version, uint64 timestamp)
